@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
@@ -26,8 +27,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.charlie.vtex.base.AppTopBar
-import com.charlie.vtex.ui.ProfileScreen
+import com.charlie.vtex.ui.profile.ProfilePage
 import com.charlie.vtex.ui.home.HomeScreen
+import com.charlie.vtex.ui.login.LoginPage
 import com.charlie.vtex.ui.node.AllNodeScreen
 import com.charlie.vtex.ui.node.NodeScreen
 import com.charlie.vtex.ui.theme.VTEXTheme
@@ -54,6 +56,7 @@ fun MainScreen() {
     val currentRoute = navBackStackEntry?.destination?.route ?: BottomNavItem.Home.route
 
     val bottomNavRoute = remember { mutableStateOf<BottomNavItem>(BottomNavItem.Home) }
+
 
     if (isMainScreen(currentRoute)) {
         val bottomItems = listOf(BottomNavItem.Home, BottomNavItem.Node, BottomNavItem.Profile)
@@ -95,6 +98,7 @@ fun MainScreen() {
                                                 launchSingleTop = true
                                                 restoreState = true
                                             }
+
                                         },
                                         selected = currentRoute == item.route,
                                         icon = {
@@ -118,6 +122,7 @@ fun MainScreen() {
     } else {
         NavigationGraph(navHostController = navController)
     }
+
 }
 
 fun isMainScreen(route: String): Boolean = when (route) {
@@ -145,7 +150,7 @@ fun NavigationGraph(navHostController: NavHostController) {
                 AllNodeScreen(navHostController)
             }
             composable(BottomNavItem.Profile.route) {
-                ProfileScreen()
+                ProfilePage(navHostController)
             }
         }
 
@@ -169,6 +174,12 @@ fun NavigationGraph(navHostController: NavHostController) {
             NodeScreen(navHostController = navHostController, navBackStackEntry.arguments)
         }
 
+        composable(
+            route = RouteKey.Login.route
+        ) { navBackStackEntry ->
+            LoginPage(navHostController = navHostController)
+        }
+
     }
 
 }
@@ -176,7 +187,7 @@ fun NavigationGraph(navHostController: NavHostController) {
 sealed class BottomNavItem(var title: String, var icon: ImageVector, var route: String) {
 
     object Home : BottomNavItem("V2EX", Icons.Filled.Home, "Home")
-    object Node : BottomNavItem("Node", Icons.Filled.MoreVert, "Node")
+    object Node : BottomNavItem("Node", Icons.Filled.Dashboard, "Node")
     object Profile : BottomNavItem("Profile", Icons.Filled.Person, "Profile")
 }
 

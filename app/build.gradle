@@ -74,6 +74,8 @@ dependencies {
     api "androidx.paging:paging-runtime:$paging_version"
     api "androidx.paging:paging-compose:$paging_compose_version"
 
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
     // ViewPager compose
     implementation "com.google.accompanist:accompanist-pager:0.24.2-alpha"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.24.2-alpha"
@@ -96,5 +98,7 @@ dependencies {
 
     // xlog
     implementation 'com.elvishew:xlog:1.10.1'
+
+    implementation 'com.tencent:mmkv:1.2.12'
 
 }

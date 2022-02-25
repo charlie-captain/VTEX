@@ -30,14 +30,14 @@ class HomeViewModel() : BaseViewModel() {
         viewModelScope.launch {
             try {
                 loadTabJobs.add(tab)
-                Log.d("asdqwe", "start load $tab  ")
+                XLog.d("asdqwe", "start load $tab  ")
                 delay(1000)
                 val data = repository.loadLatestTopics(tab)
 //                val data = mutableListOf<TopicItem>()
 //                repeat(100) {
 //                    data.add(TopicItem(1, tab.title, "个港股", "覆盖", "发送给梵蒂冈", "", "2 小时前", 32L, false))
 //                }
-                Log.d("asdqwe", "write tab =$tab , data = ${data.size}")
+                XLog.d("asdqwe", "write tab =$tab , data = ${data.size}")
                 homeTabListMap[tab]?.value = data
             } catch (e: Exception) {
                 XLog.e(e)

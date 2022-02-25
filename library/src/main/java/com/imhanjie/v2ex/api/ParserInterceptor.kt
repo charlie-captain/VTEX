@@ -81,7 +81,10 @@ class ParserInterceptor : Interceptor {
                     requestUrl = redirectUrl
                 } else if (redirectUrl.startsWith("${V2ex.BASE_URL}/signin?next=")) {
                     // 登录信息失效，直接返回
-                    return response.recreateFailJsonResponse("请先登录后再进行查看", RestfulResult.CODE_USER_EXPIRED)
+                    return response.recreateFailJsonResponse(
+                        "请先登录后再进行查看",
+                        RestfulResult.CODE_USER_EXPIRED
+                    )
                 } else if (requestUrl == "${V2ex.BASE_URL}/new") {
                     // 主题创建成功，返回 id
                     val topicId: Long = redirectUrl.split("/").let { it[it.lastIndex - 1] }.toLong()
@@ -111,7 +114,11 @@ class ParserInterceptor : Interceptor {
             val html = response.body()!!.string()
             val obj: Any
             return try {
-                obj = targetParser.parser(html)
+                if (targetParser is SignInInfoParser) {
+                    obj = targetParser.parser(response, html)
+                } else {
+                    obj = targetParser.parser(html)
+                }
                 if (obj is V2exResult) {    // v2ex json result 转成项目 result
                     // 替换 once 缓存
                     val oldOnce = CookieInterceptor.tryGetOnceFromRequest(request)

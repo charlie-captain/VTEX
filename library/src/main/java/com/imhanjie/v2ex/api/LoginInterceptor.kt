@@ -20,9 +20,9 @@ class LoginInterceptor : Interceptor {
          * GET /signin 接口中不能携带 cookies
          */
         val requestUrl = request.url().toString()
-        if (requestUrl == "${V2ex.BASE_URL}/signin" && method.toUpperCase() == "GET") {
-            request = request.newBuilder().apply { removeHeader("cookie") }.build()
-        }
+//        if (requestUrl == "${V2ex.BASE_URL}/signin" && method.toUpperCase() == "GET") {
+//            request = request.newBuilder().apply { removeHeader("cookie") }.build()
+//        }
 
         val response = chain.proceed(request)
 
