@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import com.charlie.vtex.base.AppTopBar
 import com.charlie.vtex.ui.home.HomeViewModel
 import com.charlie.vtex.ui.home.TabFragment
+import com.charlie.vtex.ui.theme.VTEXTheme
 
 @Composable
 fun NodeScreen(navHostController: NavHostController, arguments: Bundle?) {
@@ -24,21 +25,21 @@ fun NodeScreen(navHostController: NavHostController, arguments: Bundle?) {
     val topicList = remember { nodeViewModel.topicList }
     val isRefreshing by nodeViewModel.isRefreshing.observeAsState(false)
 
-
-    Column {
-        AppTopBar(
-            title = topicList.firstOrNull()?.nodeTitle ?: "",
-            leftIcon = Icons.Default.ArrowBack,
-            onLeftClick = {
-                navHostController.navigateUp()
-            })
-        TabFragment(
-            navHostController = navHostController,
-            topicList,
-            isRefreshing,
-        ) {
-            nodeViewModel.isRefreshing.value = false
+    VTEXTheme {
+        Column {
+            AppTopBar(
+                title = topicList.firstOrNull()?.nodeTitle ?: "",
+                leftIcon = Icons.Default.ArrowBack,
+                onLeftClick = {
+                    navHostController.navigateUp()
+                })
+            TabFragment(
+                navHostController = navHostController,
+                topicList,
+                isRefreshing,
+            ) {
+                nodeViewModel.isRefreshing.value = false
+            }
         }
     }
-
 }

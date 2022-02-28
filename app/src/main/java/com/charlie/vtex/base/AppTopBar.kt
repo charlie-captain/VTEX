@@ -34,7 +34,7 @@ fun AppTopBar(
 
     Row(
         modifier = Modifier
-            .height(54.dp)
+            .height(46.dp)
             .background(VTEXTheme.colors.topBar),
         verticalAlignment = Alignment.CenterVertically
     ) {

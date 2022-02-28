@@ -4,13 +4,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 
 
-val topBarLight = Color(0xFFFFFFFF)
 val itemBgLight = Color(0xFFC9C9C9)
 val mainTabSelected = Color(0xFF000000)
 val mainTabUnSelected = Color(0xFF828282)
+val textBackground = Color(0x0A666666)
 
-val topBarBlack = Color(0xFF000000)
 val itemBgBlack = Color(0xFF1F1F1F)
+val textBackgroundBlack = Color(0x0A8F8F8F)
+
 
 val white = Color(0xFFFFFFFF)
 val white1 = Color(0xFFF7F7F7)

@@ -33,7 +33,11 @@ fun ProfilePage(navHostController: NavHostController) {
     val userInfo = userInfoState.value
 
     if (userLoginState.value == false) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(VTEXTheme.colors.background), contentAlignment = Alignment.Center
+        ) {
             Button(
                 onClick = {
                     navHostController.navigate(RouteKey.Login.route)
@@ -46,7 +50,7 @@ fun ProfilePage(navHostController: NavHostController) {
                     backgroundColor = Color.LightGray,
                 )
             ) {
-                Text(text = "Login",)
+                Text(text = "Login")
             }
         }
         return
@@ -55,6 +59,7 @@ fun ProfilePage(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(VTEXTheme.colors.background)
     ) {
         ConstraintLayout(
             modifier = Modifier
@@ -70,7 +75,8 @@ fun ProfilePage(navHostController: NavHostController) {
                     .constrainAs(avatar) {
                         start.linkTo(parent.start)
                         top.linkTo(parent.top)
-                    }.clip(CircleShape)
+                    }
+                    .clip(CircleShape)
             )
 
             Column(modifier = Modifier
@@ -83,10 +89,11 @@ fun ProfilePage(navHostController: NavHostController) {
                 Text(
                     text = userInfo?.userName ?: "",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = VTEXTheme.colors.textPrimary
                 )
             }
-            
+
         }
 
     }

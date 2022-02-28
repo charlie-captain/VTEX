@@ -15,7 +15,7 @@ private val LocalVTEXColors = compositionLocalOf {
 }
 
 private val LightColorPalette = VTEXColors(
-    topBarColor = topBarLight,
+    topBarColor = white1,
     bottomBar = white1,
     background = white1,
     listItem = white,
@@ -36,10 +36,11 @@ private val LightColorPalette = VTEXColors(
     chatPageBgAlpha = 0f,
     mainTabSelected = mainTabSelected,
     mainTabUnSelected = mainTabUnSelected,
+    textBackground = textBackground,
 )
 
 private val DarkColorPalette = VTEXColors(
-    topBarColor = topBarBlack,
+    topBarColor = black1,
     bottomBar = black1,
     background = black2,
     listItem = black3,
@@ -60,6 +61,7 @@ private val DarkColorPalette = VTEXColors(
     chatPageBgAlpha = 0f,
     mainTabSelected = mainTabSelected,
     mainTabUnSelected = mainTabUnSelected,
+    textBackground = textBackgroundBlack,
 )
 
 @Stable
@@ -97,6 +99,7 @@ class VTEXColors(
     chatPageBgAlpha: Float,
     mainTabSelected: Color,
     mainTabUnSelected: Color,
+    textBackground: Color,
 ) {
 
     var topBar: Color by mutableStateOf(topBarColor)
@@ -140,11 +143,17 @@ class VTEXColors(
         private set
     var mainTabUnSelected: Color by mutableStateOf(mainTabUnSelected)
         private set
+    var textBackground: Color by mutableStateOf(textBackground)
+        private set
+
 }
 
 
 @Composable
-fun VTEXTheme(theme: VTEXTheme.Theme = VTEXTheme.Theme.Light, content: @Composable () -> Unit) {
+fun VTEXTheme(
+    theme: VTEXTheme.Theme = ThemeState.getTheme().value,
+    content: @Composable () -> Unit
+) {
     val targetColors = when (theme) {
         VTEXTheme.Theme.Light -> LightColorPalette
         VTEXTheme.Theme.Dark -> DarkColorPalette
@@ -169,6 +178,7 @@ fun VTEXTheme(theme: VTEXTheme.Theme = VTEXTheme.Theme.Light, content: @Composab
     val more = animateColorAsState(targetColors.more, TweenSpec(600))
     val mainTabSelected = animateColorAsState(targetColors.mainTabSelected, TweenSpec(600))
     val mainTabUnSelected = animateColorAsState(targetColors.mainTabUnSelected, TweenSpec(600))
+    val textBackground = animateColorAsState(targetColors.textBackground, TweenSpec(600))
     val chatPageBgAlpha = animateFloatAsState(targetColors.chatPageBgAlpha, TweenSpec(600))
     val colors = VTEXColors(
         topBarColor = topBar.value,
@@ -191,7 +201,8 @@ fun VTEXTheme(theme: VTEXTheme.Theme = VTEXTheme.Theme.Light, content: @Composab
         more = more.value,
         chatPageBgAlpha = chatPageBgAlpha.value,
         mainTabSelected = mainTabSelected.value,
-        mainTabUnSelected = mainTabUnSelected.value
+        mainTabUnSelected = mainTabUnSelected.value,
+        textBackground = textBackground.value
     )
 
     CompositionLocalProvider(LocalVTEXColors provides colors) {

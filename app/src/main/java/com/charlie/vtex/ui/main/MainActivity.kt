@@ -1,22 +1,22 @@
 package com.charlie.vtex.ui.main
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Dashboard
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -32,6 +32,7 @@ import com.charlie.vtex.ui.home.HomeScreen
 import com.charlie.vtex.ui.login.LoginPage
 import com.charlie.vtex.ui.node.AllNodeScreen
 import com.charlie.vtex.ui.node.NodeScreen
+import com.charlie.vtex.ui.theme.ThemeState
 import com.charlie.vtex.ui.theme.VTEXTheme
 import com.charlie.vtex.ui.topic.TopicItemDetails
 
@@ -40,6 +41,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeState.initTheme()
         setContent {
             MainScreen()
         }
@@ -57,22 +59,32 @@ fun MainScreen() {
 
     val bottomNavRoute = remember { mutableStateOf<BottomNavItem>(BottomNavItem.Home) }
 
+    val themeState = ThemeState.getTheme()
 
     if (isMainScreen(currentRoute)) {
         val bottomItems = listOf(BottomNavItem.Home, BottomNavItem.Node, BottomNavItem.Profile)
-        VTEXTheme {
+
+        VTEXTheme(themeState.value) {
             // A surface container using the 'background' color from the theme
             Surface(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 Scaffold(
                     topBar = {
-                        AppTopBar(title = bottomNavRoute.value.title)
+                        if (bottomNavRoute.value == BottomNavItem.Profile) {
+                            AppTopBar(
+                                title = bottomNavRoute.value.title,
+                                rightIcon = Icons.Default.ModeNight,
+                                onRightClick = {
+                                    ThemeState.changeTheme()
+                                })
+                        } else {
+                            AppTopBar(title = bottomNavRoute.value.title)
+                        }
                     },
                     bottomBar = {
                         BottomAppBar(
-                            backgroundColor = VTEXTheme.colors.bottomBar,
-                            contentColor = VTEXTheme.colors.bottomBar,
+                            contentPadding = PaddingValues(0.dp)
                         ) {
                             BottomNavigation {
                                 val navBackStackEntry by navController.currentBackStackEntryAsState()

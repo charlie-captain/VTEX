@@ -31,7 +31,10 @@ fun AllNodeScreen(navHostController: NavHostController) {
 
     val currentParent = remember { mutableStateOf<String?>(null) }
 
-    Row {
+    Row(
+        Modifier
+            .background(VTEXTheme.colors.background)
+            .fillMaxSize()) {
         ListLeft(allNodeMap, currentParent)
         Spacer(
             modifier = Modifier
@@ -49,7 +52,8 @@ fun ListLeft(
 ) {
     LazyColumn(
         modifier = Modifier
-            .width(100.dp),
+            .width(100.dp)
+            .background(VTEXTheme.colors.background),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         val toList = allNode.keys.toList()
@@ -69,7 +73,8 @@ fun ListLeft(
                     text = toList[index],
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = VTEXTheme.colors.textPrimary
                 )
             }
         }
@@ -86,9 +91,11 @@ fun ListRight(
     val key: String? =
         if (currentParent.value == null) allNode.keys.toList()
             .getOrNull(0) else currentParent.value
-    if (key == null) return
+    if (key == null) {
+        return
+    }
     val nodes = allNode.get(key) ?: return
-    LazyColumn {
+    LazyColumn(Modifier.background(VTEXTheme.colors.background)) {
         items(nodes.size) { index ->
             nodes.getOrNull(index)?.let {
                 Box(
@@ -107,7 +114,8 @@ fun ListRight(
                             end = 16.dp,
                             top = 6.dp,
                             bottom = 6.dp
-                        )
+                        ),
+                        color = VTEXTheme.colors.textPrimary
                     )
                 }
             }

@@ -5,8 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -58,6 +61,8 @@ fun HomeScreen(navHostController: NavHostController) {
                 Tab(
                     text = { Text(text = s.title) },
                     selected = pagerState.currentPage == index,
+                    selectedContentColor = VTEXTheme.colors.textPrimary,
+                    unselectedContentColor = VTEXTheme.colors.textSecondary,
                     onClick = {
                         scope.launch {
                             pagerState.animateScrollToPage(index)
@@ -79,7 +84,13 @@ fun ViewPager(
     viewModel: HomeViewModel,
 ) {
 
-    HorizontalPager(state = state, count = titles.size, modifier = Modifier.fillMaxWidth()) {
+    HorizontalPager(
+        state = state,
+        count = titles.size,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(VTEXTheme.colors.background)
+    ) {
 
         val topicTab = titles[currentPage].value
         val data = viewModel.homeTabListMap[topicTab]
@@ -131,7 +142,10 @@ fun RecyclerView(
     navHostController: NavHostController,
     list: List<TopicItem>
 ) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.background(VTEXTheme.colors.listItem)
+    ) {
         items(list) { item ->
             List(navHostController = navHostController, item = item)
         }
@@ -146,7 +160,6 @@ fun List(navHostController: NavHostController, item: TopicItem) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(VTEXTheme.colors.listItem)
             .clickable {
                 navHostController.navigate(
                     "${RouteKey.TopicItemDetails.route}/${item.id}",
@@ -161,8 +174,11 @@ fun List(navHostController: NavHostController, item: TopicItem) {
         ) {
             GlideImage(
                 imageModel = item.userAvatar,
-                modifier = Modifier.size(28.dp),
-                contentScale = ContentScale.Crop
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop,
+                placeHolder = Icons.Default.Image
             )
             Column(
                 modifier = Modifier
@@ -175,20 +191,20 @@ fun List(navHostController: NavHostController, item: TopicItem) {
                 ) {
                     Text(
                         text = item.userName,
-                        color = Color.Black,
-                        fontSize = 13.sp,
+                        color = VTEXTheme.colors.textPrimary,
+                        fontSize = 12.sp,
                     )
                     Text(
                         text = item.nodeTitle,
                         modifier = Modifier
                             .padding(start = 4.dp)
                             .clip(
-                                RoundedCornerShape(16.dp)
+                                RoundedCornerShape(8.dp)
                             )
-                            .background(Color.LightGray)
+                            .background(VTEXTheme.colors.textBackground)
                             .padding(start = 6.dp, end = 6.dp, top = 1.dp, bottom = 1.dp),
                         fontSize = 12.sp,
-                        color = Color.White
+                        color = VTEXTheme.colors.textSecondary
                     )
                 }
                 Row(
@@ -211,7 +227,7 @@ fun List(navHostController: NavHostController, item: TopicItem) {
                     Text(
                         text = item.latestReplyTime,
                         color = Color.LightGray,
-                        modifier = Modifier.padding(start = 4.dp),
+                        modifier = Modifier.padding(start = 6.dp),
                         fontSize = 12.sp
                     )
                 }
@@ -221,14 +237,15 @@ fun List(navHostController: NavHostController, item: TopicItem) {
             text = item.title,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = paddingStart, end = paddingEnd, top = 8.dp),
-            fontWeight = FontWeight.Bold
+                .padding(start = paddingStart, end = paddingEnd, top = 8.dp, bottom = 8.dp),
+            fontWeight = FontWeight.Bold,
+            color = VTEXTheme.colors.textPrimary,
+            fontSize = 14.sp
         )
 
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
                 .height(2.dp)
                 .background(VTEXTheme.colors.divider)
         )
