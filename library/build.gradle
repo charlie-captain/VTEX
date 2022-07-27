@@ -1,0 +1,67 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+//    dependencies {
+//        classpath 'com.novoda:bintray-release:0.9.1'
+//    }
+}
+
+//publish {
+//    userOrg = 'melody'
+//    groupId = 'com.imhanjie.library'
+//    artifactId = 'v2ex-api'
+//    publishVersion = '0.2.37'
+//    desc = 'v2ex api library for android'
+//    website = 'https://github.com/imhanjie/android-v2ex-api'
+//}
+
+android {
+    compileSdkVersion 32
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    compileOptions {
+        kotlinOptions.freeCompilerArgs += ['-module-name', "com.imhanjie.v2ex.api"]
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.core:core-ktx:$kotlin_version"
+
+    testImplementation 'junit:junit:4.13'
+
+    api 'org.jsoup:jsoup:1.13.1'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    //noinspection GradleDependency
+    compileOnly 'com.squareup.okhttp3:okhttp:3.14.9'
+}
